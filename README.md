@@ -19,9 +19,15 @@ If you run as a web application, you need:
 # How to use
 1. Load files you want to summarize into the MarkLogic.
 
+   See news_load.sh
+
 2. Load word2vec onnx model and the vocabulary file into the MarkLogic. 
+   
    See https://github.com/t2hk/marklogic_cntk_word2vec
 
 3. Load this project files(xqy, html, js) into the module database of the MarkLogic.
 
 4. Get the required libs and load into the module database of the MarkLogic.
+
+   - Javascript files are into ./js directory.
+   - CSS files are into ./css directory.

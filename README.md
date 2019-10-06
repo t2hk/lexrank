@@ -1,4 +1,4 @@
-# LexRnak implementation using MarkLogic10 CNTK 
+# LexRank implementation using MarkLogic10 CNTK 
 This is the LexRank implementation for text summarization using CNTK of MarkLogic10.
 
 ## Overview

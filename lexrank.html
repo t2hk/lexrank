@@ -1,0 +1,38 @@
+<html>
+<head>
+  <meta http-equiv="content-type" charset="utf-8">
+  <title>LexRank</title>
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+</head>
+<body>
+
+<div class="container" id='app'>
+  <!-- サイドメニュー -->
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul  class='list-group nav nav-slidebar'>
+        <li class='list-group-item'>ニュース</li>
+        <li v-for="(url, title) in topics" class='list-group-item'>
+          <a :href='`/lexrank_get_news_list.xqy?news=${url}`' @click.prevent.stop="get_news_list(`${url}`)">{{ title }}</a>
+        </li>
+      </ul>
+    </div>
+
+  <!-- メインコンテンツ -->
+  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+  <v-client-table :columns="news_list_cols" :data="news_list" :options="news_list_options">
+    <a slot="title" slot-scope="props" target="_blank" :href="`/lexrank_get_news.html?uri=${props.row.uri}`">{{props.row.title}}</a>
+  </v-client-table>
+
+  </div>
+</div>
+</div>
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/vue.js"></script>
+  <script src="/js/vue-tables-2.min.js"></script>
+  <script src="/js/axios.min.js"></script>
+  <script src="/js/lexrank.js"></script>
+</body>
+</html>

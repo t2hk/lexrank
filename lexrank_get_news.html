@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" charset="utf-8">
+  <title>LexRank</title>
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+  <style>
+    pre {white-space: pre-wrap;}
+  </style>
+</head>
+<body>
+
+<div class="container" id="app_doc">
+  <div class="card">
+    <div class="card-header">要約</div>
+    <div class="card-body"><pre class="card-text">{{ summary }}</pre></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header">全文</div>
+    <div class="card-body"><pre class="card-text">{{ doc }}</pre></div>
+  </div>
+</div>
+
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/vue.js"></script>
+<script src="/js/vue-tables-2.min.js"></script>
+<script src="/js/axios.min.js"></script>
+<script src="/js/lexrank.js"></script>
+</body>
+</html>

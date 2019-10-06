@@ -11,10 +11,10 @@ This program is implemented in XQuery.
 * MarkLogic10 with GPU
 
 If you run as a web application, you need:
-* vue.js
-* axios
-* vue-table-2
-* bootstrap
+* vue.js(https://jp.vuejs.org/index.html)
+* axios(https://github.com/axios/axios)
+* vue-table-2(https://github.com/matfish2/vue-tables-2)
+* bootstrap(https://getbootstrap.com/)
 
 # How to use
 1. Load files you want to summarize into the MarkLogic.

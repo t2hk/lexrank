@@ -31,3 +31,5 @@ If you run as a web application, you need:
 
    - Javascript files are into ./js directory.
    - CSS files are into ./css directory.
+   
+5. Access to the lexrank.html via the MarkLogic HTTP server.

@@ -148,10 +148,11 @@ declare function local:power-method($cosine_matrix, $N, $p_old){
       err = np.linalg.norm(p - p_old) の計算
     :::::::::::::::)
     let $p-minus-p_old := cntk:minus($p, $input-variable-p-old )
+    (:
     let $p-minus-p_old-eval := cntk:evaluate($p-minus-p_old, $input-pair, cntk:function-output($p-minus-p_old), cntk:gpu(0))
     let $p-minus-p_old-value := cntk:value-to-array(cntk:function-output($p-minus-p_old), $p-minus-p_old-eval)
     let $__ := xdmp:log(fn:concat("p : ", $p-minus-p_old-value) )
-
+    :)
     let $L2-norm := cntk:reduce-l2($p-minus-p_old, (cntk:axis(0)))
     let $L2-norm-eval := cntk:evaluate($L2-norm, $input-pair, cntk:function-output($L2-norm), cntk:gpu(0))
     let $err-value := cntk:value-to-array(cntk:function-output($L2-norm), $L2-norm-eval)

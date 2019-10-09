@@ -114,7 +114,7 @@ declare function local:sentences-cosine-similarity($sentences_vector){
   return $sentence_cosine_sims
 };
 
-declare function local:power-method($cosine_matrix, $N, $p_old, $err){
+declare function local:power-method($cosine_matrix, $N, $p_old){
 (:   
   let $N := 5
   let $cosine_matrix := 
@@ -133,7 +133,7 @@ declare function local:power-method($cosine_matrix, $N, $p_old, $err){
   let $input-pair-cos-mat := json:to-array(($input-variable-cosine-matrix, $input-value-cos-mat))
 
   let $input-variable-p-old := cntk:input-variable(cntk:shape(($N)), "float")
-  let $input-value-p-old := cntk:batch(cntk:variable-shape($input-variable-p-old), $p_old, cntk:gpu(0), "float")
+  let $input-value-p-old := cntk:batch(cntk:variable-shape($input-variable-p-old), json:to-array(($p_old)), cntk:gpu(0), "float")
   let $input-pair-p-old := json:to-array(($input-variable-p-old, $input-value-p-old))
   
   let $input-pair := json:to-array(($input-pair-cos-mat, $input-pair-p-old))
@@ -144,8 +144,6 @@ declare function local:power-method($cosine_matrix, $N, $p_old, $err){
   let $__ := xdmp:log(fn:concat("p : ", $p-value) )
 
   return
-  if ($err > $error_tolerance) then $p-value
-  else (
     (:::::::::::::::
       err = np.linalg.norm(p - p_old) の計算
     :::::::::::::::)
@@ -159,8 +157,11 @@ declare function local:power-method($cosine_matrix, $N, $p_old, $err){
     let $err-value := cntk:value-to-array(cntk:function-output($L2-norm), $L2-norm-eval)
     let $__ := xdmp:log(fn:concat("err L2-norm : ", $err-value) )
 
-    return local:power-method($cosine_matrix, $N, $p-value, $err-value)  
-  )
+    return
+      if ($err-value[1] < $error_tolerance) then $p-value
+      else (
+        return local:power-method($cosine_matrix, $N, $p-value)  
+      )
 };
 
 (:文章間の類似度のマトリクスを算出し、LexRankを算出する。:)
@@ -250,7 +251,7 @@ declare function local:get-lex-rank($indexed_sentences as json:array){
       return $_cosine_matrix
       
   let $p_old := json:to-array(( for $i in (1 to $sentences_count) return (1.0 div $sentences_count) ))
-  let $lex-rank := local:power-method($cosine_matrix, $sentences_count, $p_old, 1)
+  let $lex-rank := local:power-method($cosine_matrix, $sentences_count, $p_old)
   
   return $lex-rank 
 };

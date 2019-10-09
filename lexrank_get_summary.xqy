@@ -158,10 +158,9 @@ declare function local:power-method($cosine_matrix, $N, $p_old){
     let $__ := xdmp:log(fn:concat("err L2-norm : ", $err-value) )
 
     return
-      if ($err-value[1] < $error_tolerance) then $p-value
-      else (
-        return local:power-method($cosine_matrix, $N, $p-value)  
-      )
+      if ($err-value[1] < $error_tolerance) then 
+        local:power-method($cosine_matrix, $N, $p-value)  
+      else $p-value 
 };
 
 (:文章間の類似度のマトリクスを算出し、LexRankを算出する。:)

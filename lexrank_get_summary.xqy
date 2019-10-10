@@ -159,7 +159,7 @@ declare function local:power-method($cosine_matrix, $N, $p_old){
     let $__ := xdmp:log(fn:concat("err L2-norm : ", $err-value) )
 
     return
-      if ($err-value[1] < $error_tolerance) then 
+      if ($err-value[1] > $error_tolerance) then 
         local:power-method($cosine_matrix, $N, $p-value)  
       else $p-value 
 };

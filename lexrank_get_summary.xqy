@@ -148,20 +148,20 @@ declare function local:power-method($cosine_matrix, $N, $p_old){
       err = np.linalg.norm(p - p_old) の計算
     :::::::::::::::)
     let $p-minus-p_old := cntk:minus($p, $input-variable-p-old )
-    (:
+(:
     let $p-minus-p_old-eval := cntk:evaluate($p-minus-p_old, $input-pair, cntk:function-output($p-minus-p_old), cntk:gpu(0))
     let $p-minus-p_old-value := cntk:value-to-array(cntk:function-output($p-minus-p_old), $p-minus-p_old-eval)
     let $__ := xdmp:log(fn:concat("p : ", $p-minus-p_old-value) )
-    :)
+:)
     let $L2-norm := cntk:reduce-l2($p-minus-p_old, (cntk:axis(0)))
     let $L2-norm-eval := cntk:evaluate($L2-norm, $input-pair, cntk:function-output($L2-norm), cntk:gpu(0))
     let $err-value := cntk:value-to-array(cntk:function-output($L2-norm), $L2-norm-eval)
     let $__ := xdmp:log(fn:concat("err L2-norm : ", $err-value) )
-
+   
     return
       if ($err-value[1] > $error_tolerance) then 
         local:power-method($cosine_matrix, $N, $p-value)  
-      else $p-value 
+      else $p-value
 };
 
 (:文章間の類似度のマトリクスを算出し、LexRankを算出する。:)
@@ -204,7 +204,7 @@ declare function local:get-lex-rank($indexed_sentences as json:array){
 
       (: 取得した単語ベクトルの平均を求め、文章のベクトルとする。 :)
       let $input-mean-variable := cntk:input-variable(cntk:shape((json:array-size($word-vectors))), "float")
-      let $vector-mean := cntk:reduce-mean($input-mean-variable, cntk:axis(0))
+      let $vector-mean := cntk:reduce-mean($input-mean-variable, cntk:axis(-1))
       let $output-mean-variable := cntk:function-output($vector-mean)    
       let $input-value := cntk:batch(cntk:shape((json:array-size($word-vectors))), json:to-array(($word-vectors)), cntk:gpu(0), "float")  
       let $input-value-pair := json:to-array(($input-mean-variable, $input-value))
@@ -271,7 +271,7 @@ let $indexed_sentences :=
 
 let $lexrank := local:get-lex-rank(json:to-array(($indexed_sentences)))
 
-let $top-k-result := local:top-k(json:to-array(($lexrank)), 3)
+let $top-k-result := local:top-k(json:to-array(($lexrank)), 5)
 
 let $top-k-rank := $top-k-result[1][1]
 let $top-k-indexes := $top-k-result[2][1]
